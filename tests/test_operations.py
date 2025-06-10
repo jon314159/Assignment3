@@ -1,60 +1,84 @@
-""" tests/test_operations.py """
 import pytest
-from app.operations import addition, subtraction, multiplication, division
+from app.operations import Operations
 
 
-def test_addition_positive():
-    """Test positive cases for addition."""
-    assert addition(2, 3) == 5
-    assert addition(0, 0) == 0
-    assert addition(-1, 1) == 0
+@pytest.mark.parametrize("a, b, expected", [
+    (2, 3, 5),
+    (0, 0, 0),
+    (-1, 1, 0),
+    (-2, -3, -5),
+    (-1, 0, -1),
+], ids=[
+    "add_two_positive_integers",
+    "add_two_zeros",
+    "add_negative_and_positive",
+    "add_two_negative_integers",
+    "add_negative_and_zero",
+])
+def test_addition(a, b, expected):
+    assert Operations.addition(a, b) == expected
 
 
-def test_addition_negative():
-    """Test negative cases for addition."""
-    assert addition(-2, -3) == -5
-    assert addition(-1, 0) == -1
+@pytest.mark.parametrize("a, b, expected", [
+    (5, 3, 2),
+    (0, 0, 0),
+    (10, 5, 5),
+    (-5, -3, -2),
+    (3, 5, -2),
+], ids=[
+    "subtract_smaller_from_larger",
+    "subtract_zeros",
+    "subtract_half_value",
+    "subtract_two_negatives",
+    "subtract_larger_from_smaller",
+])
+def test_subtraction(a, b, expected):
+    assert Operations.subtraction(a, b) == expected
 
 
-def test_subtraction_positive():
-    """Test positive cases for subtraction."""
-    assert subtraction(5, 3) == 2
-    assert subtraction(0, 0) == 0
-    assert subtraction(10, 5) == 5
+@pytest.mark.parametrize("a, b, expected", [
+    (2, 3, 6),
+    (0, 10, 0),
+    (-2, -3, 6),
+    (2, -3, -6),
+    (-2, 3, -6),
+], ids=[
+    "multiply_two_positives",
+    "multiply_zero_and_positive",
+    "multiply_two_negatives",
+    "multiply_positive_and_negative",
+    "multiply_negative_and_positive",
+])
+def test_multiplication(a, b, expected):
+    assert Operations.multiplication(a, b) == expected
 
 
-def test_subtraction_negative():
-    """Test negative cases for subtraction."""
-    assert subtraction(-5, -3) == -2
-    assert subtraction(3, 5) == -2
+@pytest.mark.parametrize("a, b, expected", [
+    (6, 3, 2.0),
+    (-6, -3, 2.0),
+    (6.0, 3.0, 2.0),
+    (-6.0, 3.0, -2.0),
+    (0, 5, 0.0),
+], ids=[
+    "divide_two_positive_integers",
+    "divide_two_negative_integers",
+    "divide_two_positive_floats",
+    "divide_negative_float_by_positive_float",
+    "divide_zero_by_positive_integer",
+])
+def test_division(a, b, expected):
+    assert Operations.division(a, b) == expected
 
 
-def test_multiplication_positive():
-    """Test positive cases for multiplication."""
-    assert multiplication(2, 3) == 6
-    assert multiplication(0, 10) == 0
-    assert multiplication(-2, -3) == 6
-
-
-def test_multiplication_negative():
-    """Test negative cases for multiplication."""
-    assert multiplication(2, -3) == -6
-    assert multiplication(-2, 3) == -6
-
-
-def test_division_positive():
-    """Test positive cases for division."""
-    assert division(6, 3) == 2
-    assert division(-6, -3) == 2
-
-
-def test_division_negative():
-    """Test negative cases for division."""
-    assert division(6, -3) == -2
-    assert division(-6, 3) == -2
-
-
-def test_division_by_zero():
-    """Test division by zero."""
+@pytest.mark.parametrize("a, b", [
+    (1, 0),
+    (-5, 0),
+    (0, 0),
+], ids=[
+    "divide_positive_by_zero",
+    "divide_negative_by_zero",
+    "divide_zero_by_zero",
+])
+def test_division_by_zero(a, b):
     with pytest.raises(ValueError, match="Division by zero is not allowed."):
-        division(1, 0)
+        Operations.division(a, b)
