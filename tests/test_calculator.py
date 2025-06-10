@@ -4,6 +4,8 @@ from io import StringIO
 from app.calculator import calculator
 
 
+
+
 # Helper function to capture print statements
 def run_calculator_with_input(monkeypatch, inputs):
     """
